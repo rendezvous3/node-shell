@@ -1,8 +1,7 @@
 'use strict';
 
-const chalk = require('chalk');
 const fs = require('fs');
-const prompt = chalk.blue('\nprompt > ');
+const request = require('request');
 
 function cat(filenames, done) {
     filenames = filenames.split(' ');
@@ -62,6 +61,16 @@ function uniq (filename, done) {
     })
 }
 
+function curl(url, done) {
+    if (url.slice(0, 7) !== 'http://') url = 'http://' + url;
+    request(url, function(err, response, body){
+        if(err) throw err;
+        else if (response && (response.statusCode > 399)) throw new Error(response.statusCode);
+        if(body) done(body);
+        else done('');
+   })
+}
+
 
 module.exports = {
     cat:cat,
@@ -69,5 +78,6 @@ module.exports = {
     tail: tail,
     sort: sort,
     wc: wc,
-    uniq: uniq
+    uniq: uniq,
+    curl: curl
 }
