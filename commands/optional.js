@@ -15,9 +15,6 @@ function cat(filenames, done) {
             count++;
             if(count === filenames.length) {
                 done(texts.join(''));
-                //process.stdout.write(texts.join(''));
-                //process.stdout.write(prompt);
-                //process.stdout.write('/nprompt > ')
             }
         });
     });
@@ -27,9 +24,6 @@ function head (filename, done) {
     fs.readFile(filename, { encoding: 'utf8' }, function (err, text) {
         if (err) throw err;
         done(text.split("\n").slice(0,5).join('\n'));
-        //process.stdout.write(text.split("\n").slice(0,5).join('\n'));
-        //process.stdout.write(prompt);
-        //process.stdout.write('/nprompt > ');
     })
 }
 
@@ -37,19 +31,43 @@ function tail (filename, done) {
     fs.readFile(filename, { encoding: 'utf8' }, function(err, text){
         if (err) throw err;
         done(text.split('\n').slice(-5).join('\n'));
-        //process.stdout.write(text.split('\n').slice(-5).join('\n'));
-        //process.stdout.write(prompt);
-        //process.stdout.write('/nprompt > ');
     })
 }
 
-function sort(filename, done) {
-    fs.readFile()
+function sort (filename, done) {
+    fs.readFile(filename, { encoding: 'utf8' }, function(err, text){
+        if (err) throw err;
+        done(text.split('\n').sort().join('\n'));
+    })
+}
+
+function wc (filename, done) {
+    fs.readFile(filename, { encoding: 'utf8' }, function(err, text){
+        if (err) throw err;
+        done(text.split('\n').length);
+    })
+}
+
+function uniq (filename, done) {
+    fs.readFile(filename, { encoding: 'utf8' }, function(err, text){
+        if (err) throw err;
+        const lines = text.split('\n');
+        for(var i=0; i < lines.length; i++) {
+            if(lines[i] === lines[i+1]) {
+                lines.splice(i, 1);
+                i--;
+            }
+        }
+        done(lines.join('\n'));
+    })
 }
 
 
 module.exports = {
     cat:cat,
     head: head,
-    tail: tail
+    tail: tail,
+    sort: sort,
+    wc: wc,
+    uniq: uniq
 }

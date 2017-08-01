@@ -4,22 +4,16 @@ const fs = require('fs');
 
 function pwd(args, done) {
     done(process.env.PWD);
-    // process.stdout.write(process.env.PWD);
-    // process.stdout.write('\nprompt > ');
 }
 
 function date(args, done) {
     done(Date());
-    // process.stdout.write(Date());
-    // process.stdout.write('\nprompt > ');
 }
 
 function ls(args, done) {
     fs.readdir('.', function(err, filenames){
         if(err) throw err;
         done(filenames.join('\n'));
-        // process.stdout.write(filenames.join('\n'));
-        // process.stdout.write('\nprompt > ');
     })
 }
 
@@ -31,11 +25,8 @@ function echo (args, done) {
     }).join(' ');
 
     done(output);
-    // process.stdout.write(output);
-    // process.stdout.write('\nprompt > ');
 
 }
-
 
 let obj = {
     pwd: pwd,
